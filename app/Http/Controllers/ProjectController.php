@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use Illuminate\Http\Request;
-
+use Log;
 class ProjectController extends Controller
 {
     public function __construct()
@@ -18,6 +18,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
+
         $user = \Auth::user();
         $projects = Project::where('user_id', $user->id)->get();
 
@@ -42,6 +43,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+
         $proj = new Project([
             'name' => $request->get('name'),
             'description' => $request->get('description'),
@@ -52,7 +54,7 @@ class ProjectController extends Controller
         $proj->user()->associate($user->id);
 
         $proj->save();
-
+        Log::info('Project 등록 성공', ['user-id'=> $user->id, 'project-id'=>$proj->id]);
         return redirect('/project')
             ->with('message', $proj->name . ' 이 생성되었습니다.');
     }

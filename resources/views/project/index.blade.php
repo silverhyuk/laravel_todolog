@@ -21,45 +21,46 @@
                             {{Session::get('message')}}
                         </div>
                         @endif
-
-                        <table class="table table-striped">
-                            <thead>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>이름</td>
+                                        <td>Description</td>
+                                        <td>생성일</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($projects as $proj)
                                 <tr>
-                                    <td>이름</td>
-                                    <td>Description</td>
-                                    <td>생성일</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td>
+                                        <a href="{{route('project.show', [$proj->id])}}">{{ $proj->name }}</a>
+                                    </td>
+                                    <td>
+                                        {{ $proj->description }}
+                                    </td>
+                                    <td>
+                                        {{ $proj->created_at }}
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-success" href="{{ route('project.edit', $proj->id) }}">편집</a>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="{{ route('project.destroy', $proj->id) }}">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                            <button type="submit" class="btn btn-danger">
+                                                삭제
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($projects as $proj)
-                            <tr>
-                                <td>
-                                    <a href="{{route('project.show', [$proj->id])}}">{{ $proj->name }}</a>
-                                </td>
-                                <td>
-                                    {{ $proj->description }}
-                                </td>
-                                <td>
-                                    {{ $proj->created_at }}
-                                </td>
-                                <td>
-                                    <a class="btn btn-success" href="{{ route('project.edit', $proj->id) }}">편집</a>
-                                </td>
-                                <td>
-                                    <form method="POST" action="{{ route('project.destroy', $proj->id) }}">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
-                                        <button type="submit" class="btn btn-danger">
-                                            삭제
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
